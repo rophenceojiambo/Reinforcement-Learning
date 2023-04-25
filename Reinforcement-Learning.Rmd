@@ -1,0 +1,15 @@
+---
+title: "Reinforcement Learning for Stock Trading"
+author: "Rophence Ojiambo, Anusha Kumar"
+date: "`r Sys.Date()`"
+output:
+  bookdown::html_document2:
+  #bookdown::pdf_document2:
+bibliography: references.bib
+csl: statistics.csl
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
