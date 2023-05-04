@@ -31,7 +31,7 @@ library(htmltools)
 ```
 
 ```{r echo=FALSE}
-bytes <- file.size("Reinforcement-Learning.Rmd")
+bytes <- file.size("index.Rmd")
 words <- bytes/10
 minutes <- words/200
 ```
