@@ -1,6 +1,6 @@
 ---
 title: "Reinforcement Learning for Stock Trading"
-author: "Rophence Ojiambo & Anusha Kumar"
+author: "Project by Rophence Ojiambo & Anusha Kumar"
 output:
   bookdown::html_document2:
   #bookdown::pstocks_data_document2:
