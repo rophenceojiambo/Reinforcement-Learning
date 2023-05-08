@@ -98,7 +98,7 @@ div(
   div(
     style = "flex: 1;",
     tags$p(
-      "How can we teach a 10-year-old to trade stocks? First of all, we will start with basics of risks and rewards. Tell them to forget about lemonade stands and allowance money, we are talking real cash here. Let them imagine playing a game where they get to buy and sell imaginary items, like Pokemon cards or Beanie Babies. They should want to buy low and sell high to make a profit, just like in real life. The game is called RL, that's right, it stands for \"Real\" Life and the stakes are high, but the rewards can be even higher. Now, here's where things get tricky. RL isn't like other games where they can just hit \"reset\" and start over if you mess up. They have to learn from their mistakes and make smarter choices next time. So, one should do their research, pay attention to trends, and don't be afraid to take risks (but not too many!). It's all about balancing risk and reward, just like in RL."
+      "How can we teach a 10-year-old to trade stocks? First of all, we start with basics of risks and rewards. Tell them to forget about lemonade stands and allowance money, we are talking real cash here. Let them imagine playing a game where they get to buy and sell imaginary items, like Pokemon cards or Beanie Babies. They should want to buy low and sell high to make a profit, just like in real life. The game is called RL, that's right, it stands for \"Real\" Life and the stakes are high, but the rewards can be even higher. Now, here's where things get tricky. RL isn't like other games where they can just hit \"reset\" and start over if you mess up. They have to learn from their mistakes and make smarter choices next time. So, one should do their research, pay attention to trends, and don't be afraid to take risks (but not too many!). It's all about balancing risk and reward, just like in RL."
     ),
     style = "align: bottom;"
   ),
@@ -117,6 +117,8 @@ div(
 ```
 
 In the world of stock trading, timing is everything. It is no secret that the stock market is unpredictable, with prices rising and falling based on everything from global events to social media trends. Recently, stocks like Bitcoin, Dogecoin, GameStop and Tesla have captured the attention of investors and the public alike [@mishra2022social]. Whether it is buying low and selling high or knowing when to hold onto a stock for the long term, making the right decision can mean the difference between profit and loss. But how can traders stay on top of market trends and make informed decisions in such a volatile environment? Is it possible to automate trading entirely for traders who want to trade 24/7 but do not want to be glued to their screens all the time? One answer is reinforcement learning, a form of machine learning that trains algorithms to learn from past actions and outcomes and make better decisions over time [@sutton1998introduction; @sutton2018reinforcement]. In this project, we will explore the application of reinforcement learning in stock trading and how this can potentially change the way we think about financial investment decisions.
+
+
 # What is Reinforcement Learning?
 
 Reinforcement learning (RL) is a type of machine learning algorithm that enables an agent to learn how to make decisions based on rewards and punishments. It involves an agent interacting with an environment, taking actions, receiving feedback, and adjusting its behavior based on that feedback [@sutton2018reinforcement]. The goal of RL is to optimize the agent's behavior to maximize the cumulative reward it receives over time. RL algorithms are used in various applications such as robotics, gaming, finance, and natural language processing [@ibarz2021train; @kaiser2019model; @charpentier2021reinforcement;@li2017deep]. RL is based on the concept of trial and error. Consider an individual placed in an unfamiliar environment. Initially, mistakes may occur, but through learning from them, they can avoid repeating them in the future when faced with similar circumstances. RL employs a similar approach in training its model, whereby the agent tries different actions and observes the resulting rewards or punishments, and then adjusts its behavior to maximize the expected reward in the future. 
@@ -336,7 +338,7 @@ When using RL for trading, the figure below shows a general expectation of the t
 # <span style="color:blue">Application to Stock Data</span>
 
 
-In this section, we will discover and explore data from the stock market, downloaded from yahoo finance. Below are the variable descriptions:
+In this section, we will explore data from the stock market, downloaded from yahoo finance (2010-2022) and show implementation of the RL algorithms discussed in the previous section. Below are the variable descriptions for stock data:
 
 > **symbol:**  The name or ticker symbol of the stock, Apple (AAPL), Amazon (AMZN), Johnson & Johnson stock (JNJ), and NFLX. 
 >
@@ -383,7 +385,6 @@ datatable(stocks_data, caption = "Data sets for stocks used",
 
 
 ```{r}
-library(gridExtra)
 
 # Convert the date column to a Date format
 stocks_data$date <- as.Date(stocks_data$date)
@@ -393,7 +394,7 @@ ggplot(stocks_data, aes(x = date, y = close, color = symbol)) +
   geom_line(size=1) +
   labs(title = "Closing Price of Stocks", x = "Date",
        y = "Closing Price", color = "Stock Name") +
-  scale_x_date(date_labels = "%Y", date_breaks = "1 year") +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 year") +
   theme_tq_dark() +
   theme(plot.title = element_text(hjust = 0.5)) 
 
@@ -424,11 +425,19 @@ ggplot(stocks_data, aes(x = date, y = ma20, color = symbol)) +
 
 ##  <span style="color:blue">Implementation of Q-learning</span>
 
+#### TO DO (Anusha)
 
+<br>
 
 ##  <span style="color:blue">Implementation of SARSA</span>
 
+#### TO DO (Rophence)
+<br>
 
+##  <span style="color:blue">Implementation of other method</span>
+
+<br>
+<br>
 
 # References
 
