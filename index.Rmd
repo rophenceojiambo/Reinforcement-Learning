@@ -372,6 +372,22 @@ stocks_data <- symbols %>%
   mutate(date = as.Date(date)) %>%
   ungroup() %>%
   select(symbol, date, everything())
+```
+
+
+```{r, echo=FALSE, eval=FALSE}
+# Split the data into train and test sets by year
+stocks_train <- stocks_data %>%
+  filter(year(date) %in% 2010:2016)
+
+# Write the data frame to a CSV file
+write.csv(stocks_train, "train.csv", row.names = FALSE)
+
+stocks_test <- stocks_data %>%
+  filter(year(date) %in% 2017:2022)
+
+# Write the data frame to a CSV file
+write.csv(stocks_test, "test.csv", row.names = FALSE)
 
 ```
 
