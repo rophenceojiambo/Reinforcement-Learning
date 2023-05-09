@@ -238,10 +238,6 @@ fig1<-"Figures/q-learning.png"
 <center>
 ![[Q-learning pseudo code](https://martin-thoma.com/images/2016/07/q-learning.png)](`r fig1`)
 
-Our code implements the Q-learning algorithm to create a simple trading strategy for stocks. As the Q-learning algorithm is a model-free reinforcement learning technique, it is used to learn an optimal policy based on trial and error, thus involving building a Q-table that maps the current state and action to the expected future reward. In this case, the state is the current stock price, and the action is either to buy or hold/sell. 
-    
-The function 'Q_learning' takes a data frame of stock prices and applies the Q-learning algorithm to each stock to create a Q-matrix that stores the expected future rewards for each state-action pair. It also creates a list of Boolean Q-tables for each stock, which specify whether to buy or hold/sell at each time step based on the Q-matrix. Finally, it returns the Q-matrix, actions taken, and Q-table for each stock. The code then loads stock data for four companies "AAPL", "AMZN", "JNJ", "NFLX", extracts the adjusted prices, and combines them into a matrix. It performs exploratory data analysis (EDA) by plotting the distribution of prices for each stock. It then applies the 'Q_learning' function to each stock to create a list of Q-matrices, actions taken, and Q-tables. The 'Q_learning_summary' function then generates a summary table of the actions taken for each stock, converts the action codes to action names, and splits the summary table by stock. It creates tables for action for each stock and access the Q matrix for each stock. The 'predict_prices' function predicts the prices of a stock using the Q matrix and the current prices of the stock.
-
 ## 2. State-Action-Reward-State-Action (SARSA)
 
 SARSA (State-Action-Reward-State-Action) is a RL algorithm that is used for online and on-policy learning. It is similar to Q-learning, but instead of updating the Q-value of the current state-action pair using the maximum Q-value of the next state, SARSA updates the Q-value using the Q-value of the next state-action pair, that is, it learns the Q-value of the policy being followed [@sutton1998introduction]. The SARSA algorithm can be described by the following update rule:
@@ -444,9 +440,11 @@ ggplot(stocks_data, aes(x = date, y = ma20, color = symbol)) +
 
 ##  <span style="color:blue">Implementation of Q-learning</span>
 
-#### TO DO (Anusha)
+#### TO DO (Anusha) (insert code after paragraphs explaining the functions)
 
-<br>
+Our code implements the Q-learning algorithm to create a simple trading strategy for stocks. As the Q-learning algorithm is a model-free reinforcement learning technique, it is used to learn an optimal policy based on trial and error, thus involving building a Q-table that maps the current state and action to the expected future reward. In this case, the state is the current stock price, and the action is either to buy or hold/sell. 
+    
+The function 'Q_learning' takes a data frame of stock prices and applies the Q-learning algorithm to each stock to create a Q-matrix that stores the expected future rewards for each state-action pair. It also creates a list of Boolean Q-tables for each stock, which specify whether to buy or hold/sell at each time step based on the Q-matrix. Finally, it returns the Q-matrix, actions taken, and Q-table for each stock. The code then loads stock data for four companies "AAPL", "AMZN", "JNJ", "NFLX", extracts the adjusted prices, and combines them into a matrix. It performs exploratory data analysis (EDA) by plotting the distribution of prices for each stock. It then applies the 'Q_learning' function to each stock to create a list of Q-matrices, actions taken, and Q-tables. The 'Q_learning_summary' function then generates a summary table of the actions taken for each stock, converts the action codes to action names, and splits the summary table by stock. It creates tables for action for each stock and access the Q matrix for each stock. The 'predict_prices' function predicts the prices of a stock using the Q matrix and the current prices of the stock.
 
 ##  <span style="color:blue">Implementation of SARSA</span>
 
