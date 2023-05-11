@@ -163,12 +163,24 @@ where $\boldsymbol{J(\pi)}$ is the expected return for policy $\boldsymbol{\pi}$
 The goal of RL is to find the policy $\boldsymbol{\pi^*}$ that maximizes the objective function $\boldsymbol{J(\pi)}$, i.e.,
 
 $$\boldsymbol{\pi^* = \arg\max_{\pi} J(\pi)}$$
+Since the challenge that remains is to nudge the policy parameters such that the return can be maximized, we can meet this goal by using the gradient of the objective function. This is known as vanilla gradient ascent. We should note that gradient descent and gradient ascent are synonymous, with only a sign change being the notable difference (sign change is moved to downhill for gradient descent) [@d2020reinforcement].
 
+**Policy Gradient Theorem**
 
+<figure>
+  <center>
+    <img src="Figures/gradient_policy.png" style="width:70%">
+    <figcaption>The gradient of a policy (Source: D, P.W.P., 2020)</figcaption>
+  </center>
+</figure>
+
+<br>
+
+In step 1, we observe that our goal is to find the gradient of the objective function. Then, within step 2, the expected return is replaced with an implementation (can be any of your choice), however it is usually easier to proceed with the action-value function. We denote the expected return as equivalent to each action's (Q) value multiplied by the probability that the particular action is visited (which is defined by the policy, $\pi$).
+
+We take the gradient with respect to the parameters of the policy. Therefore, we can move Q, the action value function, outside of the calculation of the gradient (as defined in step 3). Proceeding with our steps, for step 4, we multiply the entire equation by $\pi$(a | s)/$\pi$(a | s), which is equivalent to one. Therefore, the equation is not altered. For step 5, we proceed with a typical mathematical identity, which replaces the fraction with a natural logarithm. This is a fairly standard computational trick, where we prevent the multiplication of small probabilities, which can make the gradients zero (also known as the vanishing gradient problem). Finally, for step 6, we can remember that the summation of action values, which are multiplied by the probabilities for the action, are what we started with in step 2. However, as a substitute to summing over the actions, we instruct the agent to adhere by the policy and return the expectation of the specified action over time [@d2020reinforcement].
 
 ## Key Elements of Reinforcement Learning
-
-
 
 - **Agent:** The agent in RL is the decision-making entity that interacts with the environment. In the stock trading analogy, the agent could be the trader who decides when or which stocks to buy and sell.
 
