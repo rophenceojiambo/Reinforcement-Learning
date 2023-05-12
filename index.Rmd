@@ -25,6 +25,7 @@ body {
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning=FALSE,
+                      cache = TRUE,
                       message=FALSE,
                       echo=FALSE,
                       dpi=300)
@@ -42,26 +43,9 @@ library(gridExtra)
 library(reshape2)
 library(knitr)
 library(cowplot)
+library(tidyquant) # for stock data
 ```
 
-```{r echo=FALSE}
-bytes <- file.size("index.Rmd")
-words <- bytes/10
-minutes <- words/200
-```
-
-
-<center>
-**Reading Time: `r round(minutes)` minute(s)**
-</center>
-<br>
-
-<figure>
-  <center>
-    <img src="Figures/fig1.jpg" style="width:100%; height:50%">
-    <figcaption>Image Source:[CNET](https://www.cnet.com/personal-finance/investing/its-been-a-wild-ride-stock-market-predictions-for-the-next-year/) </figcaption>
-  </center>
-</figure>
 
 
 # Introduction
@@ -242,13 +226,8 @@ Next, we expand more on the algorithms we will use for our data
 
 Q-learning [@watkins1992q] is a popular value-based reinforcement learning algorithm based on the well known Bellman equation:
 
-<figure>
-  <center>
-    <img src="Figures/fig3.jpg" style="width:50%">
-</figure
-<br>
-
-Where; V(s) is the value of the current state s,  E refers to the expectation, while λ refers to the discount factor that determines the importance of future rewards.  From the above definition of the Bellman’s equation, the action value function can be expressed as:
+$$\boldsymbol{V(s) = \mathbb{E}[R_{t+1} + \gamma V(s_{t+1}) | S_t = s]}$$
+Where; $\boldsymbol{V(s)}$ is the value of the current state $s$,  $\mathbb{E}$ refers to the expectation, while $\gamma$ refers to the discount factor that determines the importance of future rewards.  From the above definition of the Bellman’s equation, the action value function can be expressed as:
 
 <figure>
   <center>
@@ -256,22 +235,19 @@ Where; V(s) is the value of the current state s,  E refers to the expectation, w
 </figure
 <br>
 
-In Q-learning, the agent uses an iterative approach to update the Q-function estimates and learn an estimate of the optimal action-value based on the rewards obtained from each function. The optimal Q-value, denoted as Q* can be expressed as:
+In Q-learning, the agent uses an iterative approach to update the Q-function estimates and learn an estimate of the optimal action-value based on the rewards obtained from each function. The optimal Q-value, denoted as Q* can be expressed using the law of total probability as:
 
-<figure>
-  <center>
-    <img src="Figures/fig5.jpg" style="width:50%">
-</figure
-<br>
+
+$$\boldsymbol{Q^*(s, a) = \mathbb{E}{s' \sim p(\cdot|s,a)} \Big[r + \gamma \max_{a'} Q^*(s', a')\Big | s,a\Big]}$$
+where $\boldsymbol{s'} \sim \boldsymbol{p(\cdot|s,a)}$ denotes the next state sampled from the transition probability distribution, $\boldsymbol{p(\cdot|s,a)}$, $\boldsymbol{r}$ is the immediate reward obtained after taking action $\boldsymbol{a}$ in state $\boldsymbol{s}$.
 
 In the context of stock trading, Q-learning can be used to learn the optimal buying and selling decisions for a given stock, based on historical price data and other market indicators. The agent can learn to maximize its expected profit over a given time horizon, taking into account the risks and uncertainties associated with stock trading. The Q-learning algorithm can be described by the following update rule:
 
-<figure>
-  <center>
-    <img src="Figures/fig6.jpg" style="width:100%">
-</figure
-<br>
-Where α is the learning rate, which determines the extent to which new information overrides old information and how fast we approach our goal. 
+
+$$\boldsymbol{Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \Big[R_{t+1} + \gamma \max_a Q(S_{t+1}, a) - Q(S_t, A_t)\Big]}$$
+
+where $\boldsymbol{Q(S_t, A_t)}$ is the current estimate of the Q-value for state-action pair $(\boldsymbol{S_t}, \boldsymbol{A_t})$, $\boldsymbol{R_{t+1}}$ is the immediate reward obtained after taking action $\boldsymbol{A_t}$ in the next state $\boldsymbol{S_{t+1}}$, $\boldsymbol{\alpha}$ is the learning rate, $\boldsymbol{\gamma}$ is the discount factor, and $\boldsymbol{\max_a Q(S_{t+1}, a)}$ is the maximum Q-value over all possible actions in the next state $\boldsymbol{S_{t+1}}$.
+
 
 The algorithm is summarized as below:
 
@@ -287,13 +263,20 @@ fig1<-"Figures/q-learning.png"
 
 SARSA (State-Action-Reward-State-Action) is a RL algorithm that is used for online and on-policy learning. It is similar to Q-learning, but instead of updating the Q-value of the current state-action pair using the maximum Q-value of the next state, SARSA updates the Q-value using the Q-value of the next state-action pair, that is, it learns the Q-value of the policy being followed [@sutton1998introduction]. The SARSA algorithm can be described by the following update rule:
 
-<figure>
-  <center>
-    <img src="Figures/fig7.jpg" style="width:100%">
-</figure
-<br>
 
-where: $Q(s_t, a_t)$ is the Q-value of the current state-action pair $(s_t, a_t)$; $\alpha$ is the learning rate that determines the impact of the new information on the existing Q-value; $r_{t+1}$ is the reward obtained after taking action $a_t$ in state $s_t$; $\gamma$ is the discount factor that determines the importance of future rewards; $Q(s_{t+1}, a_{t+1})$ is the Q-value of the next state-action pair $(s_{t+1}, a_{t+1})$ obtained using the current policy.
+$$\boldsymbol{Q(S_t,A_t) \leftarrow Q(S_t,a_t) + \alpha[r_{t+1} + \gamma Q(S_{t+1},a_{t+1}) - Q(S_t,a_t)]}$$
+
+
+Where:
+
+- $Q(S_t,a_t)$ is the Q-value of the current state-action pair $(S_t,A_t)$
+- $\alpha$ is the learning rate that determines the impact of the new information on the existing Q-value
+- $r_{t+1}$ is the immediate reward obtained after taking action $A_t$ in state $S_t$
+- $\gamma$ is the discount factor that determines the importance of future rewards
+- $Q(S_{t+1} ,a_{t+1})$ is the Q-value of the next state-action pair $(S_{t+1},a_{t+1})$ under the current policy. This is the value of the action selected by the agent in the next state.
+- $Q(S_t,a_t)$ is the current estimate of the Q-value of state-action pair $(S_t,a_t)$.
+
+This equation updates the estimate of the Q-value of the current state-action pair by adding the difference between the observed reward and the estimate of the next state-action pair's Q-value, multiplied by the learning rate $\alpha$.
 
 The algorithm is summarized as below:
 
@@ -325,9 +308,8 @@ Target networks involve creating a separate neural network with the same archite
 
 The update equation for Deep Q-Network (DQN) algorithm can be written as follows:
 
-$$
-Q(s,a) = Q(s,a) + \alpha [r + \gamma \max_{a'} Q'(s',a') - Q(s,a)]
-$$
+$$\boldsymbol{Q(s,a) = Q(s,a) + \alpha [r + \gamma \max_{a'} Q'(s',a') - Q(s,a)]}$$
+
 Where: $Q(s,a)$ is the estimated Q-value for state s and action a; $r$ is the reward obtained after taking action a in state $s; s'$ is the next state after taking action $a$ in state $s; a'$ is the action with the highest Q-value in state $s'; Q'(s',a')$ is the target Q-value for the next state-action pair, computed using a separate target network that is periodically updated with the main network; $\alpha$ is the learning rate; $\gamma$ is the discount factor, which determines the weight given to future rewards.
 
 The algorithm is summarized as below:
@@ -342,33 +324,9 @@ fig3 <-"Figures/dqn.jpg"
 ![DQN pseudo code[@mnih2015human]](`r fig3`)
 
 
-## 4. A2C (Advantage Actor-Critic) 
 
-A2C is a reinforcement learning algorithm that combines the advantages of two other reinforcement learning algorithms: the actor-critic method and the advantage function. In A2C, an actor learns to select actions, and a critic learns to evaluate the value of state-action pairs. The advantage function is used to estimate the advantage of taking a specific action in a given state compared to taking the average action in that state.
 
-Mathematical Notation:
 
-> **S:** set of possible states
->
-> **A:** set of possible actions
->
-> **$\pi(a|s;θ):$** policy function, which maps a state s to a probability distribution over actions a, parameterized by θ
->
-> **V(s;w):** state value function, which estimates the expected return starting from state s, parameterized by w
->
-> **Q(s,a;w):** action value function, which estimates the expected return starting from state s and taking action a, parameterized by w
->
-> **R:** reward function, which maps a state-action pair (s,a) to a scalar reward value
->
-> **γ:** discount factor, which determines the relative importance of immediate and future rewards
-
-The A2C algorithm combines the actor-critic method and the advantage function to estimate the optimal policy for a given reinforcement learning problem. The actor component of A2C learns to select actions based on the current policy $\pi$, while the critic component evaluates the value of state-action pairs using the state value function $V$ and action value function $Q$.
-
-During training, the actor and critic are updated based on the temporal difference (TD)) error, which is the difference between the estimated value of a state-action pair and the actual observed reward. The TD error is used to update the actor's policy $\pi$ and the critic's value functions $V$ and $Q$. The A2C algorithm uses the advantage function to estimate the advantage of taking a specific action in a given state compared to taking the average action in that state.
-
-The advantage function is defined as $A(s,a) = Q(s,a) - V(s)$, where $A(s,a)$ is the advantage of taking action a in state $s$, $Q(s,a)$ is the estimated value of taking action $a$ in state $s$, and $V(s)$ is the estimated value of being in state $s$. The advantage function is used to update the actor's policy $\pi$ using the policy gradient method, which updates the policy parameters $\theta$ in the direction that maximizes the expected return.
-
-Overall, A2C is a powerful reinforcement learning algorithm that combines the strengths of the actor-critic method and the advantage function to learn an optimal policy for a given task. By estimating the advantage of taking specific actions in different states, A2C can learn more efficiently and achieve better performance than other reinforcement learning algorithms.
 
 ## Exploration vs Exploitation
 
@@ -432,7 +390,7 @@ In this section, we will explore data from the stock market, downloaded from yah
 
 To download stock data for Apple, Amazon, Johnson & Johnson, and Netflix in R, we can use the `tidyquant` package. 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, eval=FALSE}
 library(tidyquant) # for stock data
 
 # Define a vector with the stock symbols of interest
@@ -447,8 +405,12 @@ stocks_data <- symbols %>%
   select(symbol, date, everything())
 ```
 
+```{r}
+stocks_data <- read.csv("Data/stocks_data.csv")
+```
 
-```{r, echo=FALSE, eval=FALSE}
+
+```{r, echo=FALSE}
 # Split the data into train and test sets by year
 stocks_train <- stocks_data %>%
   filter(year(date) %in% 2010:2016)
@@ -514,6 +476,7 @@ ggplot(stocks_data, aes(x = date, y = ma20, color = symbol)) +
 
 ##  <span style="color:blue">Implementation of Q-learning</span>
 
+<<<<<<< Updated upstream
 Our code implements the Q-learning algorithm to create a simple trading strategy for stocks. The Q-learning algorithm is a model-free reinforcement learning technique used to learn an optimal policy based on trial and error. It involves building a Q-table that maps the current state and action to the expected future reward. In this case, the state is the current stock price, and the action is either to buy or hold/sell.
 
 The function 'Q_learning' takes a data frame of stock prices and applies the Q-learning algorithm to each stock to create a Q-matrix that stores the expected future rewards for each state-action pair. It also creates a list of Boolean Q-tables for each stock, which specify whether to buy or hold/sell at each time step based on the Q-matrix. Finally, it returns the Q-matrix, actions taken, and Q-table for each stock.
@@ -910,10 +873,103 @@ MSE&161.2266&1006.65&3317.487&91061.72\\
 \end{tabular}
 \end{table}
 
+
 ##  <span style="color:blue">Implementation of SARSA</span>
 
 #### TO DO (Rophence)
 <br>
+
+```{r, include=FALSE}
+source("Data Analysis/SARSA.R")
+```
+
+
+
+```{r, echo=TRUE}
+
+# extract closing prices from data
+closing_prices <- train$close
+
+# define state based on previous 3 closing prices
+define_state <- function(closing_prices, i) {
+  if (i < 4) {
+    # if not enough data points yet, use the first one as the state
+    state <- closing_prices[1]
+  } else {
+    # use previous 3 closing prices as the state
+    state <- closing_prices[(i-3):i]
+  }
+  return(state)
+}
+
+```
+
+
+```{r, echo=TRUE}
+# function that extracts the hyperparameters associated with the best result and returns them as a list
+
+tune <- function(data, alpha_range, gamma_range, epsilon_range) {
+  # initialize results list
+  results <- list()
+  
+  # loop through alpha, gamma, and epsilon values
+  for (alpha in alpha_range) {
+    for (gamma in gamma_range) {
+      for (epsilon in epsilon_range) {
+        
+        # run SARSA algorithm with current hyperparameters
+        trades_and_Q <- sarsa(data, alpha = alpha, gamma = gamma, epsilon = epsilon)
+        
+        # calculate total reward and store results
+        total_reward <- sum(unlist(lapply(trades_and_Q$trades, function(x) x$reward)))
+        results[[length(results)+1]] <- list(alpha = alpha, gamma = gamma, epsilon = epsilon, total_reward = total_reward)
+      }
+    }
+  }
+  
+  # return hyperparameters with highest total reward
+  best_result_idx <- which.max(sapply(results, function(x) x$total_reward))
+  best_result <- results[[best_result_idx]]
+  
+  return(list(alpha = best_result$alpha, gamma = best_result$gamma, epsilon = best_result$epsilon, total_reward = best_result$total_reward))
+}
+```
+
+
+
+```{r}
+# plot the closing prices with hold, buy and sell signals
+ggplot(trades_df, aes(x = as.Date(date), y = prices)) +
+  geom_line() +
+  facet_wrap(~ symbol, ncol = 2) +
+  geom_point(aes(color = factor(decision)), size = 1) +
+  scale_color_manual(values = c("red", "darkgreen", "blue"), labels = c("Sell", "Hold", "Buy")) +
+  labs(title = "Stock Prices with Decision Indicators", x = "Date", y = "Price", color = "Decision") +
+  theme_tq()
+
+```
+
+
+```{r}
+
+# plot portfolio value over time
+ggplot(data.frame(date = index(test), value = test_portfolio_value), aes(x = date, y = value)) +
+  geom_line() +
+  labs(title = "Portfolio Value over Time (Test Data)", x = "Trading days", y = "Portfolio Value") +
+  theme_tq()
+```
+
+```{r}
+# plot the closing prices with hold, buy and sell signals
+ggplot(test_trades_df, aes(x = as.Date(date), y = prices)) +
+  geom_line() +
+  facet_wrap(~ symbol, ncol = 2) +
+  geom_point(aes(color = factor(decision)), size = 1) +
+  scale_color_manual(values = c("blue", "red"), labels = c("Buy", "Sell")) +
+  labs(title = "Stock Prices with Decision Indicators [Test Data]", x = "Date", y = "Price", color = "Decision") +
+  theme_tq()
+```
+
 
 ##  <span style="color:blue">Implementation of DQN</span>
 
@@ -923,4 +979,4 @@ MSE&161.2266&1006.65&3317.487&91061.72\\
 
 # References
 
-<div id= "refs"></div>
+ <div id= "refs"></div>
