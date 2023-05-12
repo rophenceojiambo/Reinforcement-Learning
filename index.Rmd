@@ -852,7 +852,7 @@ plot(NFLX.df, main = "NFLX.df", xlab = "Date", ylab = "Prices")
 
 ## Performance Check
 
-The table above shows the performance of the predictions using mean squared error for four stocks (AAPL, AMZN, JNJ, and NFLX). For each stock, the code first predicts the prices using the Q matrices trained on the training data (2010 to 2016) and then calculates the mean squared error between the predicted prices and the actual prices in the testing data (2017 to 2022).
+We show the performance of the predictions using mean squared error for four stocks (AAPL, AMZN, JNJ, and NFLX). For each stock, the code first predicts the prices using the Q matrices trained on the training data (2010 to 2016) and then calculates the mean squared error between the predicted prices and the actual prices in the testing data (2017 to 2022).
 
 The mean squared error for AAPL is 161.2266, for AMZN it is 1006.65, for JNJ it is 3317.487, and for NFLX it is 91061.72. A lower mean squared error indicates better performance, therefore the predictions for AAPL are the most accurate among the four stocks.
 
