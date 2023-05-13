@@ -1,6 +1,7 @@
 ---
 title: "Reinforcement Learning for Stock Trading"
 author: "Rophence Ojiambo & Anusha Kumar"
+header-includes:
 output:
   rmdformats::readthedown:
     highlight: pygments
@@ -15,7 +16,7 @@ colorlinks: yes
 linkcolor: blue
 urlcolor: blue
 bibliography: references.bib
-csl: statistics.csl
+csl: apa-numeric-superscript-brackets.csl
 ---
 
 <style type="text/css">
@@ -40,7 +41,7 @@ csl: statistics.csl
 
 <h2>
 
-ADAT Working Group
+Rophence Ojiambo & Anusha Kumar
 
 </h2>
 <span>
@@ -90,10 +91,10 @@ div(
   div(
     style = "flex: 1;",
    tags$p(
-      "Imagine you are trying to train a group of monkeys to play basketball. Every time a monkey makes a successful shot, you give it a banana. If the monkey misses the shot, you do not give it a banana. Over time, the monkeys start to associate making successful shots with receiving a banana and start to develop strategies to improve their chances of making a successful shot, such as passing the ball to a teammate or practicing their aim. Better still, Imagine you are training a robot to do laundry. You set up a reinforcement learning algorithm where the robot receives a positive reward (high five) when it successfully sorts the clothes, adds the correct amount of detergent, and washes the clothes without damaging them. "
+      "Imagine you are trying to train a group of monkeys to play basketball. Every time a monkey makes a successful shot, you give it a banana. If the monkey misses the shot, you do not give it a banana. Over time, the monkeys start to associate making successful shots with receiving a banana and start to develop strategies to improve their chances of making a successful shot, such as passing the ball to a teammate or practicing their aim."
     ),
     tags$p(
-      "The robot receives a negative reward (no high five) if it damages the clothes, spills detergent, or makes a mistake in the sorting process. At first, the robot has no idea how to do laundry. It may accidentally mix whites and colors or add too much detergent, resulting in negative rewards. However, through trial and error, the robot gradually learns the correct sequence of actions to take when doing laundry. As the robot continues to do laundry over time, the robot starts to associate successfully washing and drying laundry with receiving a high-five and starts to optimize its laundry skills to maximize the chances of getting a high-five. It refines its strategy and learns to adapt to several types of fabrics and stains. It may adjust the water temperature, or the amount of detergent based on the type of fabric being washed or selecting the correct cycle."
+      "Better still, Imagine you are training a robot to do laundry. You set up a reinforcement learning algorithm where the robot receives a positive reward (high five) when it successfully sorts the clothes, adds the correct amount of detergent, and washes the clothes without damaging them. The robot receives a negative reward (no high five) if it damages the clothes, spills detergent, or makes a mistake in the sorting process. At first, the robot has no idea how to do laundry."
     )
   ),
  div(
@@ -107,6 +108,7 @@ div(
 
 ```
 
+It may accidentally mix whites and colors or add too much detergent, resulting in negative rewards. However, through trial and error, the robot gradually learns the correct sequence of actions to take when doing laundry. As the robot continues to do laundry over time, the robot starts to associate successfully washing and drying laundry with receiving a high-five and starts to optimize its laundry skills to maximize the chances of getting a high-five. It refines its strategy and learns to adapt to several types of fabrics and stains. It may adjust the water temperature, or the amount of detergent based on the type of fabric being washed or selecting the correct cycle.
 
 Over time, the robot becomes your skilled laundry assistant, capable of doing laundry efficiently and effectively. Now imagine that you change the scenario by adding a new type of fabric or stain that the robot has never encountered before. The robot may initially struggle to determine the correct cycle or water temperature or detergent amount to use. However, by experimenting with different settings and observing the results, the robot can learn to adjust its strategy to handle the new fabric or stain type. These are just a few examples of reinforcement learning. The robot/monkeys are the <span style="color:black; font-weight:bold;">agents</span>, the shot/laundry task are the <span style="color:black; font-weight:bold;">actions</span>, the banana/high-five are the <span style="color:black; font-weight:bold;">rewards</span>, and the association between the action and the reward is the <span style="color:black; font-weight:bold;">policy</span>. By using a reward signal to guide the agents' behavior, you can train them to learn a specific task or behavior. This also demonstrates how reinforcement learning algorithms can adapt to new and unexpected situations, even in complex tasks like doing laundry.
 
@@ -118,7 +120,7 @@ div(
   div(
     style = "flex: 1;",
     tags$p(
-      "How can we teach a 10-year-old to trade stocks? First of all, we start with basics of risks and rewards. Tell them to forget about lemonade stands and allowance money, we are talking real cash here. Let them imagine playing a game where they get to buy and sell imaginary items, like Pokemon cards or Beanie Babies. They should want to buy low and sell high to make a profit, just like in real life. The game is called RL, that's right, it stands for \"Real\" Life and the stakes are high, but the rewards can be even higher. Now, here's where things get tricky. RL isn't like other games where they can just hit \"reset\" and start over if you mess up. They have to learn from their mistakes and make smarter choices next time. So, one should do their research, pay attention to trends, and don't be afraid to take risks (but not too many!). It's all about balancing risk and reward, just like in RL."
+      "How can we teach a 10-year-old to trade stocks? First of all, we start with basics of risks and rewards. Tell them to forget about lemonade stands and allowance money, we are talking real cash here. Let them imagine playing a game where they get to buy and sell imaginary items, like Pokemon cards or Beanie Babies. They should want to buy low and sell high to make a profit, just like in real life. The game is called RL, that's right, it stands for \"Real\" Life and the stakes are high, but the rewards can be even higher."
     ),
     style = "align: bottom;"
   ),
@@ -135,6 +137,8 @@ div(
 
 
 ```
+
+Now, here's where things get tricky. RL isn't like other games where they can just hit "reset" and start over if you mess up. They have to learn from their mistakes and make smarter choices next time. So, one should do their research, pay attention to trends, and don't be afraid to take risks (but not too many!). It's all about balancing risk and reward, just like in RL.
 
 In the world of stock trading, timing is everything. It is no secret that the stock market is unpredictable, with prices rising and falling based on everything from global events to social media trends. Recently, stocks like Bitcoin, Dogecoin, GameStop and Tesla have captured the attention of investors and the public alike [@mishra2022social]. Whether it is buying low and selling high or knowing when to hold onto a stock for the long term, making the right decision can mean the difference between profit and loss. But how can traders stay on top of market trends and make informed decisions in such a volatile environment? Is it possible to automate trading entirely for traders who want to trade 24/7 but do not want to be glued to their screens all the time? One answer is reinforcement learning, a form of machine learning that trains algorithms to learn from past actions and outcomes and make better decisions over time [@sutton1998introduction; @sutton2018reinforcement]. In this project, we will explore the application of reinforcement learning in stock trading and how this can potentially change the way we think about financial investment decisions.
 
@@ -246,7 +250,7 @@ There are several categories of reinforcement learning algorithms that can be us
 
 - **Hybrid Reinforcement Learning Algorithms:** These algorithms combine elements of value-based and policy-based reinforcement learning. Examples of hybrid reinforcement learning algorithms for stock trading include: Trust Region Policy Optimization (TRPO) and Asynchronous Advantage Actor-Critic (A3C)
 
-In practice, the choice of reinforcement learning algorithm for stock trading depends on the specific task and the characteristics of the environment. For example, a value-based algorithm like DQN may be well-suited for a simple trading environment with discrete actions, while a policy-based algorithm like PPO may be better for a more complex environment with continuous actions. Each of these algorithms has different advantages and disadvantages, and their performance can vary depending on the specific problem being addressed and on several factors, such as: (1)Efficiency and speed of convergence, (2) Performance on historical data, (3) Robustness to market changes, (4) Ability to handle high-dimensional state and action space, and (5) Interpretability: how easily the algorithm's decisions can be interpreted and understood. Ultimately, the choice of algorithm will depend on the specific goals of the trader, the particular characteristics of the stock market being traded, and the desired performance metrics.
+>In practice, the choice of reinforcement learning algorithm for stock trading depends on the specific task and the characteristics of the environment. For example, a value-based algorithm like DQN may be well-suited for a simple trading environment with discrete actions, while a policy-based algorithm like PPO may be better for a more complex environment with continuous actions. Each of these algorithms has different advantages and disadvantages, and their performance can vary depending on the specific problem being addressed and on several factors, such as: (1)Efficiency and speed of convergence, (2) Performance on historical data, (3) Robustness to market changes, (4) Ability to handle high-dimensional state and action space, and (5) Interpretability: how easily the algorithm's decisions can be interpreted and understood. Ultimately, the choice of algorithm will depend on the specific goals of the trader, the particular characteristics of the stock market being traded, and the desired performance metrics.
 
 
 Next, we expand more on the algorithms we will use for our data
@@ -270,12 +274,21 @@ In Q-learning, the agent uses an iterative approach to update the Q-function est
 $$\boldsymbol{Q^*(s, a) = \mathbb{E}{s' \sim p(\cdot|s,a)} \Big[r + \gamma \max_{a'} Q^*(s', a')\Big | s,a\Big]}$$
 where $\boldsymbol{s'} \sim \boldsymbol{p(\cdot|s,a)}$ denotes the next state sampled from the transition probability distribution, $\boldsymbol{p(\cdot|s,a)}$, $\boldsymbol{r}$ is the immediate reward obtained after taking action $\boldsymbol{a}$ in state $\boldsymbol{s}$.
 
-In the context of stock trading, Q-learning can be used to learn the optimal buying and selling decisions for a given stock, based on historical price data and other market indicators. The agent can learn to maximize its expected profit over a given time horizon, taking into account the risks and uncertainties associated with stock trading. The Q-learning algorithm can be described by the following update rule:
+>In the context of stock trading, Q-learning can be used to learn the optimal buying and selling decisions for a given stock, based on historical price data and other market indicators. The agent can learn to maximize its expected profit over a given time horizon, taking into account the risks and uncertainties associated with stock trading. 
+
+The Q-learning algorithm can be described by the following update rule:
 
 
 $$\boldsymbol{Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \Big[R_{t+1} + \gamma \max_a Q(S_{t+1}, a) - Q(S_t, A_t)\Big]}$$
 
-where $\boldsymbol{Q(S_t, A_t)}$ is the current estimate of the Q-value for state-action pair $(\boldsymbol{S_t}, \boldsymbol{A_t})$, $\boldsymbol{R_{t+1}}$ is the immediate reward obtained after taking action $\boldsymbol{A_t}$ in the next state $\boldsymbol{S_{t+1}}$, $\boldsymbol{\alpha}$ is the learning rate, $\boldsymbol{\gamma}$ is the discount factor, and $\boldsymbol{\max_a Q(S_{t+1}, a)}$ is the maximum Q-value over all possible actions in the next state $\boldsymbol{S_{t+1}}$.
+where:
+
+- $\boldsymbol{Q(S_t, A_t)}$ is the current estimate of the Q-value for state-action pair - $(\boldsymbol{S_t}, \boldsymbol{A_t})$, 
+- $\boldsymbol{R_{t+1}}$ is the immediate reward obtained after taking action 
+- $\boldsymbol{A_t}$ in the next state $\boldsymbol{S_{t+1}}$, 
+- $\boldsymbol{\alpha}$ is the learning rate, 
+- $\boldsymbol{\gamma}$ is the discount factor, and 
+- $\boldsymbol{\max_a Q(S_{t+1}, a)}$ is the maximum Q-value over all possible actions in the next state $\boldsymbol{S_{t+1}}$.
 
 
 The algorithm is summarized as below:
@@ -299,12 +312,12 @@ $$\boldsymbol{Q(S_t,A_t) \leftarrow Q(S_t,a_t) + \alpha[r_{t+1} + \gamma Q(S_{t+
 
 Where:
 
-- $Q(S_t,a_t)$ is the Q-value of the current state-action pair $(S_t,A_t)$
-- $\alpha$ is the learning rate that determines the impact of the new information on the existing Q-value
-- $r_{t+1}$ is the immediate reward obtained after taking action $A_t$ in state $S_t$
-- $\gamma$ is the discount factor that determines the importance of future rewards
-- $Q(S_{t+1} ,a_{t+1})$ is the Q-value of the next state-action pair $(S_{t+1},a_{t+1})$ under the current policy. This is the value of the action selected by the agent in the next state.
-- $Q(S_t,a_t)$ is the current estimate of the Q-value of state-action pair $(S_t,a_t)$.
+- $\boldsymbol{Q(S_t,a_t)}$ is the Q-value of the current state-action pair $(S_t,A_t)$
+- $\boldsymbol{\alpha}$ is the learning rate that determines the impact of the new information on the existing Q-value
+- $\boldsymbol{r_{t+1}}$ is the immediate reward obtained after taking action $A_t$ in state $S_t$
+- $\boldsymbol{\gamma}$ is the discount factor that determines the importance of future rewards
+- $\boldsymbol{Q(S_{t+1} ,a_{t+1}})$ is the Q-value of the next state-action pair $(S_{t+1},a_{t+1})$ under the current policy. This is the value of the action selected by the agent in the next state.
+- $\boldsymbol{Q(S_t,a_t)}$ is the current estimate of the Q-value of state-action pair $(S_t,a_t)$.
 
 This equation updates the estimate of the Q-value of the current state-action pair by adding the difference between the observed reward and the estimate of the next state-action pair's Q-value, multiplied by the learning rate $\alpha$.
 
@@ -332,15 +345,26 @@ Deep Q-Network (DQN), is a type of RL algorithm that was introduced in 2015 and 
 </figure
 <br>
 
-The DQN algorithm uses experience replay and target networks to improve the stability and efficiency of the learning process. Experience replay involves storing the agent's experiences (i.e., state, action, reward, next state) in a replay buffer and sampling mini-batches of experiences randomly from the buffer to train the neural network. 
+<br>
 
-Target networks involve creating a separate neural network with the same architecture as the Q-network but with frozen weights to estimate the target Q-values used in the Bellman equation. This reduces the correlation between the target and predicted Q-values, which improves the stability of the learning process. 
+
+>The DQN algorithm uses experience replay and target networks to improve the stability and efficiency of the learning process. Experience replay involves storing the agent's experiences (i.e., state, action, reward, next state) in a replay buffer and sampling mini-batches of experiences randomly from the buffer to train the neural network. 
+
+>Target networks involve creating a separate neural network with the same architecture as the Q-network but with frozen weights to estimate the target Q-values used in the Bellman equation. This reduces the correlation between the target and predicted Q-values, which improves the stability of the learning process. 
 
 The update equation for Deep Q-Network (DQN) algorithm can be written as follows:
 
 $$\boldsymbol{Q(s,a) = Q(s,a) + \alpha [r + \gamma \max_{a'} Q'(s',a') - Q(s,a)]}$$
 
-Where: $Q(s,a)$ is the estimated Q-value for state s and action a; $r$ is the reward obtained after taking action a in state $s; s'$ is the next state after taking action $a$ in state $s; a'$ is the action with the highest Q-value in state $s'; Q'(s',a')$ is the target Q-value for the next state-action pair, computed using a separate target network that is periodically updated with the main network; $\alpha$ is the learning rate; $\gamma$ is the discount factor, which determines the weight given to future rewards.
+Where: 
+
+- $\boldsymbol{Q(s,a)}$ is the estimated Q-value for state s and action a; 
+- $\boldsymbol{r}$ is the reward obtained after taking action $a$ in state $s$; 
+- $\boldsymbol{s'}$ is the next state after taking action $a$ in state $s; 
+- $a'$ is the action with the highest Q-value in state $s'$; 
+- $\boldsymbol{Q'(s',a')}$ is the target Q-value for the next state-action pair, computed using a separate target network that is periodically updated with the main network; 
+- $\boldsymbol{\alpha}$ is the learning rate; 
+- $\boldsymbol{\gamma}$ is the discount factor, which determines the weight given to future rewards.
 
 The algorithm is summarized as below:
 
@@ -361,10 +385,12 @@ fig3 <-"Figures/dqn.jpg"
 ## Exploration vs Exploitation
 
 
-The process of learning in RL is through exploration and exploitation [@powell2008optimal]. Exploration involves selecting actions that the agent has not taken before and is a crucial aspect of RL as it helps the agent to enhance its current knowledge of each action by discovering new states and actions that can potentially lead to a higher rewards. By improving the precision of the estimated action-values, the agent can make more informed decisions in the future, leading to better performance.
+The process of learning in RL is through exploration and exploitation [@powell2008optimal]. 
+
+>Exploration involves selecting actions that the agent has not taken before and is a crucial aspect of RL as it helps the agent to enhance its current knowledge of each action by discovering new states and actions that can potentially lead to a higher rewards. By improving the precision of the estimated action-values, the agent can make more informed decisions in the future, leading to better performance.
 
 
-On the other hand, exploitation selects the action that appears to offer the greatest reward by utilizing the agent's current action-value estimates. However, pursuing greedy actions based on action-value estimates may not necessarily lead to the optimal solution, resulting in sub-optimal behavior. Exploration provides the agent with more accurate estimates of action-values, whereas exploitation may yield more rewards. However, the agent cannot pursue both simultaneously, creating a dilemma known as the exploration-exploitation tradeoff.
+>On the other hand, exploitation selects the action that appears to offer the greatest reward by utilizing the agent's current action-value estimates. However, pursuing greedy actions based on action-value estimates may not necessarily lead to the optimal solution, resulting in sub-optimal behavior. Exploration provides the agent with more accurate estimates of action-values, whereas exploitation may yield more rewards. However, the agent cannot pursue both simultaneously, creating a dilemma known as the exploration-exploitation tradeoff.
 
 - **Greedy Policy:** The agent takes the action with the maximum Q value at any state in the environment in the greedy policy exploration. This approach ensures the agent takes the optimal action at each step, but it has the obvious shortcoming of never exploring any other action other than the optimal one, leading to sub-optimal solutions.
 
@@ -396,7 +422,7 @@ When using RL for trading, the figure below shows a general expectation of the t
 <br>
 
 
-# <span style="color:blue">Application to Stock Data</span>
+# Application to Stock Data
 
 
 In this section, we will explore data from the stock market, downloaded from yahoo finance (2010-2022) and show implementation of the RL algorithms discussed in the previous section. Below are the variable descriptions for stock data:
@@ -504,7 +530,7 @@ ggplot(stocks_data, aes(x = date, y = ma20, color = symbol)) +
 
 ```
 
-##  <span style="color:blue">Implementation of Q-learning</span>
+## Implementation of Q-learning
 
 
 ```{r, include=FALSE}
@@ -551,12 +577,6 @@ kable(table_data, format = "html",
 
 ```
 
-```{r}
-library(kableExtra)
-
- 
-
-```
 
 
 ## Plot for predicted closing prices and Adjusted prices
@@ -597,9 +617,8 @@ MSE&161.2266&1006.65&3317.487&91061.72\\
 \end{table}
 
 
-##  <span style="color:blue">Implementation of SARSA</span>
+## Implementation of SARSA
 
-#### TO DO (Rophence)
 <br>
 
 ```{r, include=FALSE}
@@ -694,12 +713,19 @@ ggplot(test_trades_df, aes(x = as.Date(date), y = prices)) +
 ```
 
 
-##  <span style="color:blue">Implementation of DQN</span>
+##  Implementation of DQN
 
-#### TO DO (Anusha/Rophence)
+
 <br>
 <br>
 
 # References
 
- <div id= "refs"></div>
+<div id="refs"></div>
+
+# Session Info
+
+
+```{r fig.align='center', cache=F, fig.width=6, warning=FALSE}
+sessionInfo(package = NULL)
+```
