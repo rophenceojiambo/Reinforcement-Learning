@@ -827,6 +827,98 @@ ggplot(test_trades_df, aes(x = as.Date(date), y = prices)) +
 
 ##  Implementation of DQN
 
+Next, we used `tensorflow` package in python to implement the DQN on our stock data. However, since training on the full train data set was not feasible due to computational time and memory capacity, we trained the DQN on one stock, NFLX. To reproduce the same using other stocks, all one has to do is just select the stock they want from the drop down widget created in the 
+[DQN file](). We used the same train/test splits as in the previous sections.
+
+The code in the [DQN file]() defines a class `Agent` which implements a Q-learning algorithm for trading in financial markets.The `__init__ method` initializes the hyperparameters and the neural network architecture. `act` method selects an action based on the current state and `get_state` method returns the current state. `replay` method trains the Q-network. `buy` method buys or sells shares according to the action selected by the Q-network.
+
+The main logic of the code is in the `buy` method, which takes the initial money and tries to buy and sell shares at different time steps based on the Q-network's decisions. The actions can be to `buy`, `sell`, or `do nothing`. The shares are bought if the Q-network selects action 1 and if the price is less than the available initial money. The shares are sold if the Q-network selects action 2 and if there are shares in the inventory. The profit or loss is calculated based on the price at which the shares are bought and sold. The overall rewards are stored in the total profit variable.
+
+The code also includes a neural network architecture with several hidden layers and uses the `TensorFlow` library for deep learning. We tested the performance of 4 different architectures, with Adam chosen as our chosen gradient descent algorithm as shown in the snip below. Results of our evaluation are presented below for our four network architectures:
+
+<figure>
+  <center>
+    <img src="Figures/architectures.jpg" style="width:100%">
+    <figcaption>The different network architectures tested
+    </figcaption>
+  </top>
+</figure
+<br>
+
+Below are the performance results for the different architectures;
+
+<figure>
+  <center>
+    <img src="Figures/network_architectures.jpg" style="width:100%">
+</figure
+<br>
+
+<figure>
+  <center>
+    <img src="Figures/architecture1.jpg" style="width:100%">
+</figure
+
+<br>
+
+
+<figure>
+  <center>
+    <img src="Figures/architecture2.jpg" style="width:100%">
+</figure
+
+<br>
+
+<figure>
+  <center>
+    <img src="Figures/architecture3.jpg" style="width:100%">
+</figure
+
+<br>
+
+<figure>
+  <center>
+    <img src="Figures/architecture4.jpg" style="width:100%">
+</figure
+
+<br>
+<br>
+
+We found the best architecture to be the fourth one; the one with two neural networks, with 512 neurons in the first layer and 256 in the second layer. The metrics  used to compare our models were the total gains in terms of total investment which were observed over the trading days across each 50 Episode period during training. The fourth architecture had 60.97% gains in investment during training.
+
+Next, we tested the best network architecture on the test data.
+
+```{r, echo =TRUE, eval=FALSE}
+# test the agent
+states_buy_test, states_sell_test, total_gains_test, invest_test = test_agent.buy(initial_money = initial_money)
+```
+
+Below is a snip of how the agent was trading in the test data for the first 35 days.
+
+<figure>
+  <center>
+    <img src="Figures/test_agent.jpg" style="width:100%">
+    <figcaption> Trading decisions and performance of architecture 4 in the test data
+    </figcaption>
+  </center>
+</figure
+
+<br>
+<br>
+<br>
+
+For the Netflix stocks, the figure below shows the trading decisions made by the agent in the test data.
+
+<figure>
+  <center>
+    <img src="Figures/test_best_architecture.jpg" style="width:100%">
+    <figcaption>The different network architectures tested
+    </figcaption>
+  </center>
+</figure
+
+<br>
+
+We observe that in the test data, the agent achieved a 14.96% gains in total investments.
 
 <br>
 <br>
