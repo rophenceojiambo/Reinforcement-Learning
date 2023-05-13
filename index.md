@@ -389,6 +389,89 @@ Our code then loads stock data for four companies "AAPL", "AMZN", "JNJ", "NFLX",
 
 The 'Q_learning_summary' function generates a summary table of the actions taken for each stock, converts the action codes to action names, and splits the summary table by stock. It then creates tables for action for each stock and access the Q matrix for each stock. The 'predict_prices' function predicts the prices of a stock using the Q matrix and the current prices of the stock.
 
+```r
+#Q_learning function
+Q_learning <- function(prices) {
+  # Define the initial values of the Q-matrix and the learning parameters
+  n <- nrow(prices)
+  n_stocks <- ncol(prices)
+  Q_list <- vector("list", n_stocks)
+  for (j in 1:n_stocks) {
+    Q_list[[j]] <- matrix(0, nrow = n, ncol = 3) # Q-matrix for stock j with 3 actions
+  }
+  alpha <- 0.2 # Learning rate
+  gamma <- 0.9 # Discount factor
+  
+  # Initialize an empty vector to store the actions taken
+  actions_taken <- vector("numeric", n-1)
+  
+  # Loop through each time step
+  for (i in 2:n) {
+    # Loop through each stock
+    for (j in 1:n_stocks) {
+      # Define the state at time t-1
+      state <- prices[i-1, j]
+      
+      # Select the action with the highest Q-value
+      q_values <- Q_list[[j]][i-1, ]
+      action <- sample(which(q_values == max(q_values)), 1)
+      
+      # Store the action taken at time t-1
+      actions_taken[i-1] <- action
+      
+      # Define the reward and the next state at time t
+      reward <- prices[i, j] - prices[i-1, j] # The reward is the change in the price of stock j
+      next_state <- prices[i, j]
+      
+      # Update the Q-matrix using the Q-learning algorithm
+      Q_list[[j]][i, action] <- Q_list[[j]][i-1, action] + alpha * (reward + gamma * max(Q_list[[j]][i-1, ]) - Q_list[[j]][i-1, action])
+    }
+  }
+  
+  # Create a list of Q-tables for each stock
+  Q_table <- lapply(Q_list, function(x) {
+    buy_action <- x[, 1] > x[, 2] & x[, 1] > x[, 3] # Buy if Q-value of buy is greater than Q-value of hold/sell
+    sell_action <- x[, 2] > x[, 1] & x[, 2] > x[, 3] # Sell if Q-value of sell is greater than Q-value of hold/buy
+    hold_action <- !buy_action & !sell_action # Hold if none of the above is true
+    data.frame(Buy = buy_action, Sell = sell_action, Hold = hold_action)
+  })
+  
+  # Return the list of Q-matrices (one for each stock), actions taken, and Q-tables
+  return(list(Q_list = Q_list, actions_taken = actions_taken, Q_table = Q_table))
+}
+
+```
+
+```r
+#==================================================
+#presentation of actions taken
+#==================================================
+# Generate summary Action table
+Q_learning_summary <- function(prices) {
+  # Define the names of the actions
+  action_names <- c("Buy","Sell","Hold")
+  
+  # Run the Q_learning function and extract the actions taken
+  Q_result <- Q_learning(prices)
+  actions_taken <- Q_result$actions_taken
+  
+  # Convert the action codes to action names
+  actions_taken <- factor(actions_taken, levels = 1:3, labels = action_names)
+  
+  # Create a summary table of the actions taken for each stock
+  summary_table <- data.frame(
+    Stock = rep(colnames(prices), each = nrow(prices)-1),
+    Action_Taken = actions_taken,
+    stringsAsFactors = FALSE
+  )
+  
+  # Return the summary table
+  return(summary_table)
+}
+summary_table <- Q_learning_summary(prices_df)
+summary_table
+
+```
 
 
 ## Summary tables for action taken
