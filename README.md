@@ -24,8 +24,9 @@ Website link: https://rophenceojiambo.github.io/Reinforcement-Learning/
 -------------------------------------------------------------
 ## Collaborators
 
+[Anusha Kumar](https://github.com/akumar1246)
+
 [Rophence Ojiambo](https://github.com/rophenceojiambo)
 
-[Anusha Kumar](https://github.com/akumar1246)
 
 -------------------------------------------------------------
