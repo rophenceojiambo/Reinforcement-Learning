@@ -186,16 +186,19 @@ Since the challenge that remains is to nudge the policy parameters such that the
 
 <figure>
   <center>
-    <img src="Figures/gradient_policy.png" style="width:70%">
-    <figcaption>The gradient of a policy (Source: D, P.W.P., 2020)</figcaption>
+    <img src="Figures/gradient_policy.jpg" style="width:70%">
+    <figcaption>The gradient of a policy (Source: D, P.W.P., 2020 [@d2020reinforcement])</figcaption>
   </center>
 </figure>
 
 <br>
 
-In step 1, we observe that our goal is to find the gradient of the objective function. Then, within step 2, the expected return is replaced with an implementation (can be any of your choice), however it is usually easier to proceed with the action-value function. We denote the expected return as equivalent to each action's (Q) value multiplied by the probability that the particular action is visited (which is defined by the policy, $\pi$).
-
-We take the gradient with respect to the parameters of the policy. Therefore, we can move Q, the action value function, outside of the calculation of the gradient (as defined in step 3). Proceeding with our steps, for step 4, we multiply the entire equation by $\pi$(a | s)/$\pi$(a | s), which is equivalent to one. Therefore, the equation is not altered. For step 5, we proceed with a typical mathematical identity, which replaces the fraction with a natural logarithm. This is a fairly standard computational trick, where we prevent the multiplication of small probabilities, which can make the gradients zero (also known as the vanishing gradient problem). Finally, for step 6, we can remember that the summation of action values, which are multiplied by the probabilities for the action, are what we started with in step 2. However, as a substitute to summing over the actions, we instruct the agent to adhere by the policy and return the expectation of the specified action over time [@d2020reinforcement].
+- In step 1, we observe that our goal is to find the gradient of the objective function. 
+- Then, within step 2, the expected return is replaced with an implementation (can be any of your choice), however it is usually easier to proceed with the action-value function. We denote the expected return as equivalent to each action's (Q) value multiplied by the probability that the particular action is visited (which is defined by the policy, $\pi$).
+- We take the gradient with respect to the parameters of the policy. Therefore, we can move Q, the action value function, outside of the calculation of the gradient (as defined in step 3). 
+- Proceeding with our steps, for step 4, we multiply the entire equation by $\pi$(a | s)/$\pi$(a | s), which is equivalent to one. Therefore, the equation is not altered. 
+- For step 5, we proceed with a typical mathematical identity, which replaces the fraction with a natural logarithm. This is a fairly standard computational trick, where we prevent the multiplication of small probabilities, which can make the gradients zero (also known as the vanishing gradient problem). 
+- Finally, for step 6, we can remember that the summation of action values, which are multiplied by the probabilities for the action, are what we started with in step 2. However, as a substitute to summing over the actions, we instruct the agent to adhere by the policy and return the expectation of the specified action over time [@d2020reinforcement].
 
 ## Key Elements of Reinforcement Learning
 
@@ -250,7 +253,10 @@ There are several categories of reinforcement learning algorithms that can be us
 
 - **Hybrid Reinforcement Learning Algorithms:** These algorithms combine elements of value-based and policy-based reinforcement learning. Examples of hybrid reinforcement learning algorithms for stock trading include: Trust Region Policy Optimization (TRPO) and Asynchronous Advantage Actor-Critic (A3C)
 
->In practice, the choice of reinforcement learning algorithm for stock trading depends on the specific task and the characteristics of the environment. For example, a value-based algorithm like DQN may be well-suited for a simple trading environment with discrete actions, while a policy-based algorithm like PPO may be better for a more complex environment with continuous actions. Each of these algorithms has different advantages and disadvantages, and their performance can vary depending on the specific problem being addressed and on several factors, such as: (1)Efficiency and speed of convergence, (2) Performance on historical data, (3) Robustness to market changes, (4) Ability to handle high-dimensional state and action space, and (5) Interpretability: how easily the algorithm's decisions can be interpreted and understood. Ultimately, the choice of algorithm will depend on the specific goals of the trader, the particular characteristics of the stock market being traded, and the desired performance metrics.
+>In practice, the choice of reinforcement learning algorithm for stock trading depends on the specific task and the characteristics of the environment. For example, a value-based algorithm like DQN may be well-suited for a simple trading environment with discrete actions, while a policy-based algorithm like PPO may be better for a more complex environment with continuous actions. 
+>
+>
+>Each of these algorithms has different advantages and disadvantages, and their performance can vary depending on the specific problem being addressed and on several factors, such as: (1)Efficiency and speed of convergence, (2) Performance on historical data, (3) Robustness to market changes, (4) Ability to handle high-dimensional state and action space, and (5) Interpretability: how easily the algorithm's decisions can be interpreted and understood. Ultimately, the choice of algorithm will depend on the specific goals of the trader, the particular characteristics of the stock market being traded, and the desired performance metrics.
 
 
 Next, we expand more on the algorithms we will use for our data
@@ -294,12 +300,12 @@ where:
 The algorithm is summarized as below:
 
 ```{r echo=FALSE}
-#the image of the neural network algorithm trained via Bayesian
+# q-learning pseudo code
 fig1<-"Figures/q-learning.jpg"
 ```
 
 <left>
-![[Q-learning pseudo code](https://martin-thoma.com/images/2016/07/q-learning.png)](`r fig1`)
+![[Q-learning pseudo code](https://stackoverflow.com/questions/6848828/what-is-the-difference-between-q-learning-and-sarsa)](`r fig1`)
 
 
 ## 2. State-Action-Reward-State-Action (SARSA)
@@ -324,12 +330,23 @@ This equation updates the estimate of the Q-value of the current state-action pa
 The algorithm is summarized as below:
 
 ```{r echo=FALSE}
-#the image of the neural network algorithm trained via Bayesian
+# sarsa pseudo code
 fig2<-"Figures/sarsa.jpg"
 ```
 
 <left>
-![[SARSA pseudo code](https://martin-thoma.com/images/2016/07/sarsa-lambda.png)](`r fig2`)
+![[SARSA pseudo code](https://stackoverflow.com/questions/6848828/what-is-the-difference-between-q-learning-and-sarsa)](`r fig1`)
+
+
+### What then is the difference between Q-Learning and SARSA?
+
+From the `Q-Learning` and `SARSA` pseudo codes [obtained from stackoverflow] illustrated in the previous sections, the blue boxes emphasize the portion where the two algorithms exhibit a distinction, while the numbers highlight a more intricate difference as elaborated below.
+
+>1. The key difference between SARSA and Q-learning lies in how the Q-value is updated after each action. In SARSA, the Q-value is updated based on the Q-value of the action chosen using an ε-greedy policy. In contrast, Q-learning selects the maximum Q-value over all possible actions for the next step, which effectively means that no exploration is performed at this stage.
+>
+> 2. Despite this difference, Q-learning still selects the action based on an ε-greedy policy when taking an actual action. Therefore, the "Choose A ..." step is included in the repeat loop.
+>
+>3. In Q-learning, the action for the next step is still selected using an ε-greedy policy, following the logic of the loop.
 
 
 ## 3. Deep Q-network (DQN)
@@ -400,6 +417,7 @@ The process of learning in RL is through exploration and exploitation [@powell20
 - **Thompson sampling** [@agrawal2013thompson] is a more sophisticated exploration strategy that involves selecting actions based on the probability of their being optimal. This strategy involves maintaining a probability distribution over the possible rewards of each action and then selecting the action with the highest expected reward according to this distribution. Thompson sampling is particularly useful in situations where the environment is complex and dynamic and where it is not clear which actions will lead to a higher reward. However, this strategy can be computationally expensive and difficult to implement in practice.
 
 
+When implementing the above mentioned algorithms, we mainly apply the `Epsilon-greedy` policy.
 
 # Previous Work
 
@@ -619,8 +637,6 @@ MSE&161.2266&1006.65&3317.487&91061.72\\
 
 ## Implementation of SARSA
 
-<br>
-
 ```{r, include=FALSE}
 source("Data Analysis/SARSA.R")
 ```
@@ -645,6 +661,11 @@ define_state <- function(closing_prices, i) {
 }
 
 ```
+
+Next, we defined the `tune` function that takes in a dataset, a range of values for the learning rate (alpha), discount factor (gamma), and epsilon-greedy policy (epsilon). The function uses nested loops to iterate over each combination of alpha, gamma, and epsilon values and runs the SARSA algorithm on the dataset using those hyperparameters. The function then calculates the total reward obtained by the `SARSA` algorithm and stores the hyperparameters and the total reward as a list in the "results" variable. 
+
+After performing the hyperparameter tuning, the optimal combination of hyperparameters that yielded the highest total reward for the `SARSA` algorithm were; $\alpha= 0.8$, $\gamma= 0.3$, and $\epsilon =0.1$. These were associated with the highest total reward of 21069.54.
+
 
 
 ```{r, echo=TRUE}
@@ -677,7 +698,7 @@ tune <- function(data, alpha_range, gamma_range, epsilon_range) {
 }
 ```
 
-
+We then used the combination of the best hyperparameters to train the algorithm on the train test. The figure below shows the algorithm made a higher number of `buy` trading actions compared to the `sell` actions.
 
 ```{r}
 # plot the closing prices with hold, buy and sell signals
@@ -693,7 +714,7 @@ ggplot(trades_df, aes(x = as.Date(date), y = prices)) +
 
 To test the `SARSA` algorithm on the test data, we modified the `sarsa` function to use the learned Q-table to choose actions based on the current state instead of using the `epsilon-greedy policy`. Here, we removed the Q-table initialization and epsilon-greedy policy from the original `sarsa` function, and added an additional input parameter Q to the `sarsa_test` function to take in the learned Q-table. To test the `SARSA` algorithm on the test data, we can call the `sarsa_test` function with the test data and the learned Q-table as input:
 
->The portfolio value over time represents the value of the portfolio as it changes over the period of the test data. It shows how the agent's decisions based on the SARSA algorithm impacted the portfolio's value. A higher portfolio value means that the agent's decisions led to more profitable trades and a better overall outcome.
+
 
 ```{r}
 
@@ -703,6 +724,8 @@ ggplot(data.frame(date = index(test), value = test_portfolio_value), aes(x = dat
   labs(title = "Portfolio Value over Time (Test Data)", x = "Trading days", y = "Portfolio Value") +
   theme_tq()
 ```
+
+>The portfolio value over time represents the value of the portfolio as it changes over the period of the test data. It shows how the agent's decisions based on the SARSA algorithm impacted the portfolio's value. A higher portfolio value means that the agent's decisions led to more profitable trades and a better overall outcome.
 
 ```{r}
 # plot the closing prices with hold, buy and sell signals
