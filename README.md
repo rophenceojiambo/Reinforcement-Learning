@@ -13,7 +13,7 @@ Website link: https://rophenceojiambo.github.io/Reinforcement-Learning/
 
 - `Data Analysis`: This folder contains our Reinforcement Learning algorithms implemented in this project, specifically `Q-Learning`, `SARSA` and `DQN`.
 
-- `Data`: This folder contains the data sets used for the stocks 
+- `Data`: This folder contains the data sets used for the stocks. The quantmod package was used to retrieve the stock price data from Yahoo Finance. We collect data from four stocks (Apple, Amazon, Johnson & Johnson, Netflix) from January 1, 2010 to December 31, 2022. 
 
 - `Figures`: This folder contains figures used in this project. GIFs, Pseudo codes, equations, and plots for the implementation of the RL algorithms are included.
 
