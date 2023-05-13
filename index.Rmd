@@ -923,11 +923,16 @@ For the Netflix stocks, the figure below shows the trading decisions made by the
 <br>
 <br>
 
-We observe that in the test data, the agent achieved a 14.96% gains in total investments.
+We observe that in the test data, the agent achieved a 14.96% gains in total investments, which is good performance.
 
 # Discussion
 
-In this project, 
+In this project, we have explored the use of reinforcement learning algorithms for making trading decisions in the stock market. Specifically, we implemented Q-learning and SARSA algorithms in R and a deep Q-network (DQN) algorithm in Python to develop trading strategies based on historical stock data
+For the DQN, we trained the agent for 50 iterations, during which it made buy/sell decisions based on the current state and the Q-values of the available actions. The agent stored the experience tuple (state, action, reward, next_state, done) in its memory buffer, and periodically performed a batch update on the Q-values using the experiences in the buffer. At each checkpoint (100), the total rewards earned by the agent, the cost (i.e., the loss during training), and the current amount of money held by the agent were printed.
+
+## Conclusion
+
+It's worth noting that developing an effective trading strategy using Q-learning, SARSA, and DQN RL algorithms is a challenging task that requires careful attention to the choice of input features, reward function, and hyperparameters. Also, keep in mind that trading stocks is a complex task and that the code in this project is only a starting point for a basic implementation and can be improved. It is unlikely to produce profitable trading strategies without further modification, that is, by adding more features (technical indicators,), using a more sophisticated state representation (sentiment scores), market indices, company fundamentals), running on more episodes and tuning the hyperparameters.
 
 # References
 
