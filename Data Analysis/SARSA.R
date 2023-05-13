@@ -15,6 +15,7 @@ test <- read.csv("Data/test.csv")
 test <- data.frame(test) %>% na.omit()
 
 names(train)
+
 #------------------------------------------------------------------------------#
 
 # extract closing prices from data
@@ -61,6 +62,7 @@ sarsa <- function(data, alpha = 0.1, gamma = 0.9, epsilon = 0.1) {
   
   # initialize portfolio value and trades list
   portfolio_value <- 1
+  portfolio_values <- numeric(length(data$close))
   trades <- list()
   
   # define epsilon-greedy policy function
@@ -111,9 +113,12 @@ sarsa <- function(data, alpha = 0.1, gamma = 0.9, epsilon = 0.1) {
     state <- next_state
     trades[[t-1]] <- list(state = state, action = action, reward = reward)
   }
-  
+    
+    # record portfolio value
+    portfolio_values[t] <- portfolio_value
+    
   # return trades and Q table
-  return(list(trades = trades, Q = Q))
+  return(list(trades = trades, Q = Q, portfolio_value = portfolio_values))
 }
 
 #------------------------------------------------------------------------------#
@@ -143,7 +148,7 @@ tune <- function(data, alpha_range, gamma_range, epsilon_range) {
   best_result_idx <- which.max(sapply(results, function(x) x$total_reward))
   best_result <- results[[best_result_idx]]
   
-  return(list(alpha = best_result$alpha, gamma = best_result$gamma, epsilon = best_result$epsilon))
+  return(list(alpha = best_result$alpha, gamma = best_result$gamma, epsilon = best_result$epsilon, total_reward = best_result$total_reward))
 }
 
 # ranges of hyperparameters to test
@@ -155,7 +160,7 @@ epsilon_range <- seq(0.1, 1, by = 0.1)
 # which we can then use to train your SARSA algorithm on the full stock data set.
 best_hyperparameters <- tune(train, alpha_range, gamma_range, epsilon_range)
 
-# $alpha [1] 0.2  $gamma [1] 0.4 $epsilon [1] 0.2
+# $alpha [1] 0.8  $gamma [1] 0.3 $epsilon [1] 0.1, $total_reward [1] 21069.54
 
 ################################################################################
 
@@ -194,18 +199,15 @@ trades_df <- data.frame(do.call(rbind, trades))
 trades_df$date <- train[2:nrow(train), 2]
 
 # create portfolio value column
-trades_df$portfolio_value <- c(exp(cumsum(trades_df$reward)))
+train_portfolio_value <- sarsa_result$portfolio_value
 
-# REDO this!
 
-# plot portfolio value with vertical lines for trades
-#ggplot(trades_df, aes(x = date, y = portfolio_value)) +
- # geom_line() +
-  #geom_vline(data = subset(trades_df, action == "buy"), aes(xintercept = date), color = "green") +
-  # geom_vline(data = subset(trades_df, action == "sell"), aes(xintercept = date), color = "red") +
-  #xlab("Date") + ylab("Portfolio Value") +
-  #ggtitle("Portfolio Value with Trades Marked") +
-  #theme_minimal()
+# plot portfolio value over time
+ggplot(data.frame(date = index(train), value = train_portfolio_value), aes(x = date, y = value)) +
+  geom_line() +
+  labs(title = "Portfolio Value over Time (Test Data)", x = "Date", y = "Portfolio Value")
+
+
 
 #------------------------------------------------------------------------------#
 # THIS WORKS!
@@ -227,7 +229,7 @@ ggplot(trades_df, aes(x = as.Date(date), y = prices)) +
   geom_point(aes(color = factor(decision)), size = 1) +
   scale_color_manual(values = c("red", "darkgreen", "blue"), labels = c("Sell", "Hold", "Buy")) +
   labs(title = "Stock Prices with Decision Indicators", x = "Date", y = "Price", color = "Decision") +
-  theme_tq_dark()
+  theme_tq()
 
 
 # TO DO: Plot portfolio value over time
@@ -314,8 +316,31 @@ ggplot(data.frame(date = index(test), value = test_portfolio_value), aes(x = dat
   geom_line() +
   labs(title = "Portfolio Value over Time (Test Data)", x = "Date", y = "Portfolio Value")
 
+#------------------------------------------------------------------------------#
 
 # TO DO: plot closing prices with trading decisions
 
+# convert trades list to data frame
+test_trades_df <- data.frame(do.call(rbind, test_trades))
+test_trades_df$date <- test[2:nrow(test), 2]
+
+# extract the  closing prices
+
+test_trades_df$prices <- test[2:nrow(test), 6]
+test_trades_df$symbol <- test[2:nrow(test), 1]
+
+# extract buy/sell decisions from trades vector
+
+# Code decision column
+test_trades_df$decision <- ifelse(test_trades_df$action == "buy", 0, 1)
+
+# plot the closing prices with hold, buy and sell signals
+ggplot(test_trades_df, aes(x = as.Date(date), y = prices)) +
+  geom_line() +
+  facet_wrap(~ symbol, ncol = 2) +
+  geom_point(aes(color = factor(decision)), size = 1) +
+  scale_color_manual(values = c("blue", "red"), labels = c("Buy", "Sell")) +
+  labs(title = "Stock Prices with Decision Indicators [Test Data]", x = "Date", y = "Price", color = "Decision") +
+  theme_tq()
 #------------------------------------------------------------------------------#
 
