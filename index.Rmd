@@ -403,7 +403,7 @@ The process of learning in RL is through exploration and exploitation [@powell20
 
 # Previous Work
 
-Reinforcement learning (RL) is an effective approach for building intelligent trading agents in stock markets. Among various RL algorithms, Q-learning, SARSA, and Deep Q-Network (DQN) are the most popular ones. Q-learning is a model-free RL algorithm that uses the Q-function to approximate the optimal policy. The Q-value of each action-state pair is updated using the Bellman equation. A recent study conducted by Gupta and Sharma (2021) proposed a Q-learning-based trading algorithm that uses technical indicators as the state space and predicts future price movements to make trading decisions. The results showed that the proposed algorithm outperformed the traditional buy-and-hold strategy and other benchmark algorithms in terms of cumulative returns.
+Reinforcement learning (RL) is an effective approach for building intelligent trading agents in stock markets. Among various RL algorithms, Q-learning, SARSA, and Deep Q-Network (DQN) are the most popular ones. Q-learning is a model-free RL algorithm that uses the Q-function to approximate the optimal policy. The Q-value of each action-state pair is updated using the Bellman equation. A recent study conducted by Gupta and Sharma (2021)[@rani2022stock] proposed a Q-learning-based trading algorithm that uses technical indicators as the state space and predicts future price movements to make trading decisions. The results showed that the proposed algorithm outperformed the traditional buy-and-hold strategy and other benchmark algorithms in terms of cumulative returns.
 
 SARSA is another popular RL algorithm that is used for trading in stock markets. Unlike Q-learning, SARSA is an on-policy algorithm that uses the SARSA Q-function to estimate the expected future rewards. A recent study conducted by Jiang and Yao (2020) proposed a SARSA-based algorithm that used technical indicators as input features to predict the stock prices and make trading decisions. The results showed that the SARSA-based algorithm outperformed the buy-and-hold strategy and other benchmark algorithms in terms of cumulative returns and Sharpe ratio.
 
@@ -625,7 +625,7 @@ MSE&161.2266&1006.65&3317.487&91061.72\\
 source("Data Analysis/SARSA.R")
 ```
 
-
+The [SARSA](https://github.com/rophenceojiambo/Reinforcement-Learning/blob/main/Data%20Analysis/) code provided is an implementation of the SARSA (State-Action-Reward-State-Action) reinforcement learning algorithm to train an agent to make buy, sell, or hold decisions for the stocks used in this project. The code is set up to train the agent on a subset of the data (2010-2016) and test the agent on the remaining data (2017-2022).
 
 ```{r, echo=TRUE}
 
@@ -691,6 +691,9 @@ ggplot(trades_df, aes(x = as.Date(date), y = prices)) +
 
 ```
 
+To test the `SARSA` algorithm on the test data, we modified the `sarsa` function to use the learned Q-table to choose actions based on the current state instead of using the `epsilon-greedy policy`. Here, we removed the Q-table initialization and epsilon-greedy policy from the original `sarsa` function, and added an additional input parameter Q to the `sarsa_test` function to take in the learned Q-table. To test the `SARSA` algorithm on the test data, we can call the `sarsa_test` function with the test data and the learned Q-table as input:
+
+>The portfolio value over time represents the value of the portfolio as it changes over the period of the test data. It shows how the agent's decisions based on the SARSA algorithm impacted the portfolio's value. A higher portfolio value means that the agent's decisions led to more profitable trades and a better overall outcome.
 
 ```{r}
 
@@ -712,6 +715,9 @@ ggplot(test_trades_df, aes(x = as.Date(date), y = prices)) +
   theme_tq()
 ```
 
+> From the above results; while the code may be able to generate some predictions on the test data, it is important to keep in mind that SARSA is a model-free algorithm, meaning that it does not explicitly model the underlying dynamics of the stock market. Instead, it learns through trial and error by exploring different actions and observing the resulting rewards.
+
+> Limitation: It is difficult to make definitive predictions on the test data using this code alone. It would be more appropriate to evaluate the performance of the agent on the test data by analyzing its trades and portfolio value over time and comparing it to a benchmark such as a buy-and-hold strategy. Additionally, it would be useful to further analyze the agent's behavior and performance by adjusting the hyperparameters (alpha, gamma, and epsilon) and potentially using alternative reinforcement learning algorithms or additional features.
 
 ##  Implementation of DQN
 
