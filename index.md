@@ -389,8 +389,6 @@ Our code then loads stock data for four companies "AAPL", "AMZN", "JNJ", "NFLX",
 
 The 'Q_learning_summary' function generates a summary table of the actions taken for each stock, converts the action codes to action names, and splits the summary table by stock. It then creates tables for action for each stock and access the Q matrix for each stock. The 'predict_prices' function predicts the prices of a stock using the Q matrix and the current prices of the stock.
 
-
-
 ## Summary tables for action taken
 
 The table shows the frequency of each action ("Buy", "Sell", "Hold") taken for each stock. For instance, for the stock "AAPL", the algorithm took the action "Buy" 2958 times, "Sell" 157 times, and "Hold" 156 times during the simulation. The same information is presented for the other three stocks ("AMZN", "JNJ", and "NFLX").
