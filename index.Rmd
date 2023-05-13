@@ -828,7 +828,7 @@ ggplot(test_trades_df, aes(x = as.Date(date), y = prices)) +
 ##  Implementation of DQN
 
 Next, we used `tensorflow` package in python to implement the DQN on our stock data. However, since training on the full train data set was not feasible due to computational time and memory capacity, we trained the DQN on one stock, NFLX. To reproduce the same using other stocks, all one has to do is just select the stock they want from the drop down widget created in the 
-[DQN file](). We used the same train/test splits as in the previous sections. We build some of the code used in this section from [Analytics Vidhya] (https://www.analyticsvidhya.com/blog/2021/01/bear-run-or-bull-run-can-reinforcement-learning-help-in-automated-trading/), but tailored it to serve the needs of our project.
+[DQN file](). We used the same train/test splits as in the previous sections. We build some of the code used in this section from [Analytics Vidhya](https://www.analyticsvidhya.com/blog/2021/01/bear-run-or-bull-run-can-reinforcement-learning-help-in-automated-trading/), but tailored it to serve the needs of our project.
 
 The code in the [DQN file]() defines a class `Agent` which implements a Q-learning algorithm for trading in financial markets.The `__init__ method` initializes the hyperparameters and the neural network architecture. `act` method selects an action based on the current state and `get_state` method returns the current state. `replay` method trains the Q-network. `buy` method buys or sells shares according to the action selected by the Q-network.
 
