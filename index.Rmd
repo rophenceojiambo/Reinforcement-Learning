@@ -843,6 +843,9 @@ The code also includes a neural network architecture with several hidden layers 
     </figcaption>
   </top>
 </figure
+
+<br>
+<br>
 <br>
 
 Below are the performance results for the different architectures;
@@ -911,11 +914,13 @@ For the Netflix stocks, the figure below shows the trading decisions made by the
 <figure>
   <center>
     <img src="Figures/test_best_architecture.jpg" style="width:100%">
-    <figcaption>The different network architectures tested
+    <figcaption>The trading calls of best architecture in the testd data
     </figcaption>
   </center>
 </figure
 
+<br>
+<br>
 <br>
 
 We observe that in the test data, the agent achieved a 14.96% gains in total investments.
