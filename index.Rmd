@@ -904,6 +904,8 @@ In this project, we have explored the use of reinforcement learning algorithms f
 
 It's worth noting that developing an effective trading strategy using Q-learning, SARSA, and DQN RL algorithms is a challenging task that requires careful attention to the choice of input features, reward function, and hyperparameters. Also, keep in mind that trading stocks is a complex task and that the code in this project is only a starting point for a basic implementation and can be improved. It is unlikely to produce profitable trading strategies without further modification, that is, by (1) adding more features (such as technical indicators,) (2) using a more sophisticated state representation (such as sentiment scores, market indices, company fundamentals), (3) running on more episodes and (5) extensive tuning the hyperparameters.
 
+All codes for this project can be found at our [GitHub Repository](https://github.com/rophenceojiambo/Reinforcement-Learning), which also has the link to [Project Website](https://rophenceojiambo.github.io/Reinforcement-Learning/)
+
 # References
 
 <div id="refs"></div>
