@@ -342,7 +342,7 @@ fig2<-"Figures/sarsa.jpg"
 
 ### What then is the difference between Q-Learning and SARSA?
 
-From the `Q-Learning` and `SARSA` pseudo codes [obtained from stackoverflow] illustrated in the previous sections, the blue boxes emphasize the portion where the two algorithms exhibit a distinction, while the numbers highlight a more intricate difference as elaborated below.
+From the [Q-Learning and SARSA pseudo codes](https://stackoverflow.com/questions/6848828/what-is-the-difference-between-q-learning-and-sarsa) illustrated in the previous sections, the blue boxes emphasize the portion where the two algorithms exhibit a distinction, while the numbers highlight a more intricate difference as elaborated below.
 
 >1. The key difference between SARSA and Q-learning lies in how the Q-value is updated after each action. In SARSA, the Q-value is updated based on the Q-value of the action chosen using an ε-greedy policy. In contrast, Q-learning selects the maximum Q-value over all possible actions for the next step, which effectively means that no exploration is performed at this stage.
 >
@@ -421,7 +421,7 @@ The process of learning in RL is through exploration and exploitation [@powell20
 
 When implementing the above mentioned algorithms, we mainly apply the `Epsilon-greedy` policy.
 
-# Previous Work
+## Previous Work
 
 Reinforcement learning (RL) is an effective approach for building intelligent trading agents in stock markets. Among various RL algorithms, Q-learning, SARSA, and Deep Q-Network (DQN) are the most popular ones. Q-learning is a model-free RL algorithm that uses the Q-function to approximate the optimal policy. The Q-value of each action-state pair is updated using the Bellman equation. A recent study conducted by Chakole et. al [@chakole2021q] used the Q-learning algorithm of Reinforcement Learning to train a trading agent for discovering optimal dynamic trading strategies. They conducted experiments using the proposed models on real stock market data from the Indian and American stock markets. The results showed that the proposed models were more profitable compared to the Buy-and-Hold and Decision-Tree based trading strategies.
 
